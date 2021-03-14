@@ -9,16 +9,18 @@ function Banner() {
 
     useEffect(() => {
         async function fetchData() {
-            const request = await instance.get( requests.fetchActionMovies )
+            const request = await instance.get(requests.fetchNetflixOriginals)
+
             setMovie(
-                request.data.result[
-                    Math.floor(Math.random() * request.data.request.length - 1)
+                request.data.results[
+                    Math.floor(Math.random() * request.data.results.length - 1)
                 ]
-            )
+            );
+
             return request
         }
 
-        fetchData();
+        fetchData()
     }, [])
 
     console.log(movie)
@@ -29,24 +31,20 @@ function Banner() {
     return (
         <header className="banner" style={{
             backgroundSize: "cover",
-            backgroundImage: `url("https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Black_flag.svg/1200px-Black_flag.svg.png")`,
+            backgroundImage: `url("https://image.tmdb.org/t/p/original/${movie?.backdrop_path}")`,
             backgroundPosition: "center center"
         }}> 
 
             <div className="banner__contents">
                 <h1 className="banner__title">
-                    Movie Name
+                    {movie?.title || movie?.name || movie?.original_name }
                 </h1>
                 <div className="banner__buttons">
                     <button className="banner__button">Play</button>
                     <button className="banner__button">My List</button>
                 </div>
                 <h1 className="banner__description">
-                    {truncate(`This is the test description This is the test description
-                This is the test description
-                This is the test descriptionThis is the test description This is the test description
-                This is the test description
-                This is the test description`, 150)}
+                    {truncate(movie?.overview, 150)}
                 </h1>
             </div>    
 
